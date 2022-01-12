@@ -31,9 +31,13 @@
       <a href="/">Artistify</a>
     </span>
     <nav>    
+      {{#unless isLoggedIn}}
       <a href="/auth/signup" class="link">Sign up<i class="fas fa-user-plus">|</i></a>
       <a href="/auth/signin" class="link">Sign in<i class="fas fa-sign-in-alt">|</i></a>
+      {{/unless}}
+      {{#if isLoggedIn}}
       <a href="/auth/signout" class="link">Sign out<i class="fas fa-sign-out-alt">|</i></a>
+      {{/if}}
       <a href="/" class="link">home</a> |
       <a href="/artist" class="link">artists</a> |
       <a href="/album" class="link">albums</a> |

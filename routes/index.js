@@ -6,6 +6,8 @@ const AlbumModel = require("./../model/Album");
 const LabelModel = require("./../model/Label");
 const StyleModel = require("./../model/Style");
 
+const protectAdminRoute = require("./../middlewares/protectAdminRoute");
+
 /* GET home page. */
 
 router.get("/", async (req, res, next) => {
@@ -15,6 +17,12 @@ router.get("/", async (req, res, next) => {
       .limit(3);
 
     const lastAlbums = await AlbumModel.find().sort({ createdAt: -1 }).limit(3);
+
+    // const IsLoggedIn = false;
+
+    // if (req.session.currentUser) {
+    //   IsLoggedIn = true;
+    // }
 
     res.render("index", {
       lastArtists,
@@ -27,7 +35,7 @@ router.get("/", async (req, res, next) => {
 
 /* GET dashboard page  */
 
-router.get("/dashboard", async (req, res, next) => {
+router.get("/dashboard", protectAdminRoute, async (req, res, next) => {
   try {
     const dbRes = await Promise.all([
       ArtistModel.find(),

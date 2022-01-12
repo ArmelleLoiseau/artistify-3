@@ -5,6 +5,12 @@
     <input type="text" name="email" id="email" />
     <label for="password">Password</label>
     <input type="password" name="password" id="password" />
+    <label for="role">Role</label>
+    <select type="text" name="role" id="role">
+        {{#each role}}
+            <option value="{{this}}">{{this}}</option>
+        {{/each}}
+    </select>
     <label for="file">Avatar</label>
     <input type="file" name="file" id="file" />
     

@@ -30,7 +30,7 @@ app.use(
   session({
     secret: process.env.SESSION_SECRET,
     saveUninitialized: true,
-    resave: true
+    resave: true,
   })
 );
 
@@ -39,7 +39,6 @@ app.use(
 // flash relies on the express-session mechanism
 // session config MUST be declared first !!!!
 app.use(flash());
-
 
 // CUSTOM MIDDLEWARES
 // expose flash message to the hbs templates, if any flash-message is defined
@@ -54,7 +53,7 @@ const artistRouter = require("./routes/artist");
 const albumRouter = require("./routes/album");
 const labelRouter = require("./routes/label");
 const styleRouter = require("./routes/style");
-const authRouter = require("./routes/auth")
+const authRouter = require("./routes/auth");
 
 // use routers
 app.use("/", indexRouter); // use routers
@@ -83,4 +82,3 @@ app.use(function (err, req, res, next) {
 console.log("http://localhost:" + process.env.PORT || 3000);
 
 module.exports = app;
-
