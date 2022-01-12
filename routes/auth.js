@@ -1,10 +1,17 @@
 const router = require("express").Router()
 const mongoose = require("mongoose")
 const bcryptjs = require("bcryptjs")
+const bcrypt = require("bcrypt")
 
 const saltRounds = 10
 
 const User = require("../model/User")
+
+router.get("/signout", (req, res) => {
+    req.session.destroy(function(err) {
+        res.redirect('/auth/signin');
+    })
+})
 
 router.get("/signin", (req, res) => {
     res.render("auth/signin.hbs")
@@ -51,4 +58,30 @@ router.post("/signup", (req, res) => {
                 })
 })
 
+
+router.post('/signin', async (req, res, next) => {
+    try {
+        const {email, password} = req.body;
+        const foundUser = await User.findOne(email);
+        if(!foundUser) {
+            req.flash('error', "User not found.");
+            res.redirect('/auth/signin');
+        } else {
+            const isSamePassword = bcrypt.compareSync(password, foundUser.password);
+            if (!isSamePassword) {
+                req.flash('error', "Wrong password.");
+                res.redirect('/auth/signin');
+            } else {
+                const userObject = foundUser.toObject();
+                delete userObject.password;
+                req.session.currentUser = userObject;
+                req.flash('success', "Successfully logged in !");
+                res.redirect('/dashboard');
+            }
+        }
+
+    } catch (e) {
+        next(e);
+    }
+})
 module.exports = router
